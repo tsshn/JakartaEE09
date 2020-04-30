@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="../styles.css" rel="stylesheet"/>
+    <title>Home</title>
+</head>
+
+<body>
+
+<div class="sideMenu">
+    <div class="menuElementWrapper"><a class="menuElement" href="/">Home</a></div>
+    <div class="menuElementWrapper" th:if="${#authorization.expression('isFullyAuthenticated()')}"><a
+            class="menuElement" href="/cabinet">Cabinet</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/library">Library</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/login">Login</a></div>
+</div>
+
+</body>
+
+</html>

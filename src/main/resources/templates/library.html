@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../styles.css" rel="stylesheet"/>
+    <title>Library</title>
+</head>
+
+<body>
+
+<div class="sideMenu">
+    <div class="menuElementWrapper"><a class="menuElement" href="/">Home</a></div>
+    <div class="menuElementWrapper" th:if="${#authorization.expression('isFullyAuthenticated()')}"><a
+            class="menuElement" href="/cabinet">Cabinet</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/library">Library</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/login">Login</a></div>
+</div>
+
+<div id="container">
+
+    <div class="block" th:if="${#authorization.expression('hasAuthority(''VIEW_ADMIN'')')}">
+        <h2>Add Book</h2>
+        <form id="addBook">
+            <div class="center">
+                <input name="title" placeholder="Title">
+                <input name="author" placeholder="Author">
+                <input name="isbn" placeholder="Isbn">
+            </div>
+            <button type="submit" class="submitBtn">Add</button>
+        </form>
+    </div>
+
+    <div class="block">
+        <h2>Filter</h2>
+        <form id="filter">
+            <div class="center">
+                <input name="query" placeholder="Input">
+                <select name="select" placeholder="Title">
+                    <option th:value="title">Title</option>
+                    <option th:value="author">Author</option>
+                    <option th:value="isbn">ISBN</option>
+                </select>
+            </div>
+            <button type="submit" class="submitBtn">Filter</button>
+        </form>
+    </div>
+
+    <div class="block">
+        <h2>Library</h2>
+        <div class="library">
+            <table>
+                <thead>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Action</th>
+                </thead>
+                <tbody id="library">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(
+        function () {
+            $('#addBook').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/add',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        title: $(this).find('[name=title]').val(),
+                        isbn: $(this).find('[name=isbn]').val(),
+                        author: $(this).find('[name=author]').val()
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                    },
+                    success: function () {
+                        $.ajax({
+                                url: '/get',
+                                success: (response) => (fill(response))
+                            }
+                        )
+                    }
+                })
+            });
+
+            $('#filter').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/filter',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        input: $(this).find('[name=query]').val(),
+                        property: $(this).find('[name=select]').val()
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                    },
+                    success: function (response) {
+                        fill(response);
+                    }
+                })
+            });
+            $.ajax({
+                    url: '/get',
+                    success: (response) => (fill(response))
+                }
+            )
+        });
+
+    function like(id) {
+        $.ajax({
+            type: 'POST',
+            url: `liked/${id}`,
+            dataType: 'json'
+        });
+    }
+
+    function fill(data) {
+        let $books = $('#library');
+        $books.empty();
+        data.forEach(book => {
+            $books.append('<tr><td>' + book.title + '</td><td>' + book.author + '</td><td>' + book.isbn + '</td><td th:if="${#authorization.expression(\'isFullyAuthenticated()\')}">' +
+                '<button onClick="like(\'' + book.id + '\')" class="">Like</button></td></tr>');
+        })
+    }
+</script>
+
+</body>
+</html>

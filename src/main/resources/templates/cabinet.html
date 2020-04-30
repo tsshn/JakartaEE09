@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <link href="../styles.css" rel="stylesheet"/>
+    <title>Cabinet</title>
+</head>
+
+<body>
+
+<div class="sideMenu">
+    <div class="menuElementWrapper"><a class="menuElement" href="/">Home</a></div>
+    <div class="menuElementWrapper" th:if="${#authorization.expression('isFullyAuthenticated()')}"><a
+            class="menuElement" href="/cabinet">Cabinet</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/library">Library</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/login">Login</a></div>
+</div>
+
+<div id="container">
+    <div class="block">
+        <h2>Liked</h2>
+        <div class="library">
+            <table>
+                <thead>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Action</th>
+                </thead>
+                <tbody id="liked">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(
+        function () {
+            getLiked();
+        });
+
+    function getLiked() {
+        $.ajax({
+            url: '/liked',
+            success: function (response) {
+                getDetails(response);
+            }
+        });
+    }
+
+    function remove(id) {
+        $.ajax({
+            type: 'DELETE',
+            url: `liked/${id}`,
+            dataType: 'json',
+            success: function (response) {
+                getLiked(response);
+            }
+        });
+    }
+
+    function getDetails(data) {
+        let liked = $('#liked');
+        liked.empty();
+        data.forEach(book => {
+            liked.append('<tr><td>' + book.title + '</td><td>' + book.author + '</td><td>' + book.isbn + '</td><td>' +
+                '<button onClick="remove(\'' + book.id + '\')" class="">Remove</button></td></tr>');
+        })
+    }
+</script>
+
+</body>
+
+</html>

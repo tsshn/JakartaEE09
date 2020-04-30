@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../styles.css" rel="stylesheet"/>
+    <title>Login</title>
+</head>
+
+<body>
+
+<div class="sideMenu">
+    <div class="menuElementWrapper"><a class="menuElement" href="/">Home</a></div>
+    <div class="menuElementWrapper" th:if="${#authorization.expression('isFullyAuthenticated()')}"><a
+            class="menuElement" href="/cabinet">Cabinet</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/library">Library</a></div>
+    <div class="menuElementWrapper"><a class="menuElement" href="/login">Login</a></div>
+</div>
+
+<div class="block" style="width: 250px; margin-top: 100px;">
+    <form id="login" style="text-align: center;">
+        <div th:if="${!#authorization.expression('isFullyAuthenticated()')}">
+            <div class="center" style="width: 250px;">
+                <input name="login" id="loginField" placeholder="Login">
+                <input name="password" id="passwordField" type="password" placeholder="Password">
+            </div>
+            <button type="submit" class="submitBtn">Log in</button>
+            <button id="register" class="submitBtn">Register</button>
+        </div>
+        <button th:if="${#authorization.expression('isFullyAuthenticated()')}" id="logout" class="submitBtn">Logout</button>
+    </form>
+    <span id="mistakeInfo"></span>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(function () {
+        $('#login').submit(function (e) {
+            console.log($(this).find('[name=login]').val());
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/login',
+                dataType: 'json',
+                data: JSON.stringify({
+                    login: $(this).find('[name=login]').val(),
+                    password: $(this).find('[name=password]').val()
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json')
+                },
+                success: function () {
+                    window.location.href = window.location.origin + "/cabinet";
+                }
+            });
+        });
+
+        $('#register').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/register',
+                dataType: 'json',
+                data: JSON.stringify({
+                    login: $('#loginField').val(),
+                    password: $('#passwordField').val()
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                },
+                success: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/login',
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            login: $('#loginField').val(),
+                            password: $('#passwordField').val()
+                        }),
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader('Content-Type', 'application/json')
+                        },
+                        success: function () {
+                            window.location.href = window.location.origin + "/cabinet";
+                        }
+                    });
+                }
+            })
+        });
+
+        $('#logout').click(function () {
+            $.ajax({
+                url: '/logout',
+                success: function () {
+                    window.location.href = window.location.origin + "/login";
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>

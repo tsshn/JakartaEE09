@@ -1,0 +1,149 @@
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    background: #2f3437;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.block {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    box-shadow: rgba(15, 15, 15, 0.1) 0 0 0 1px, rgba(15, 15, 15, 0.2) 0 5px 10px, rgba(15, 15, 15, 0.4) 0 15px 40px;
+    padding: 15px;
+}
+
+.sideMenu {
+    padding: 15px;
+    position: fixed;
+    left: 0;
+    top: 100px;
+    background: #2f3437;
+    box-shadow: rgba(15, 15, 15, 0.1) 0 0 0 1px, rgba(15, 15, 15, 0.2) 0 5px 10px, rgba(15, 15, 15, 0.4) 0 15px 40px;
+}
+
+.menuElement {
+    text-decoration: none;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.menuElementWrapper {
+    padding: 5px;
+}
+
+select {
+    background: rgba(15, 15, 15, 0.3) none repeat scroll 0 0;
+    box-shadow: rgba(15, 15, 15, 0.2) 0 0 0 1px inset, rgba(15, 15, 15, 0.2) 0 1px 1px inset;
+    padding: 5.5px;
+    color: white;
+    border: none;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.center {
+    width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.library {
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+input {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 4px 10px;
+    position: relative;
+    border-radius: 3px;
+    box-shadow: rgba(15, 15, 15, 0.2) 0 0 0 1px inset, rgba(15, 15, 15, 0.2) 0 1px 1px inset;
+    background: rgba(15, 15, 15, 0.3) none repeat scroll 0 0;
+    cursor: text;
+    border: none;
+    color: white;
+}
+
+table {
+    border: 1px solid white;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+    font-weight: normal;
+    border-collapse: collapse;
+}
+
+tr, td, th {
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid rgba(15, 15, 15, 0.3);
+}
+
+th {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+#update {
+    margin-top: 20px;
+}
+
+.submitBtn {
+    margin-top: 10px;
+}
+
+button {
+    text-align: initial;
+    user-select: none;
+    transition: background 120ms ease-in 0s;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    height: 25px;
+    border-radius: 3px;
+    box-shadow: rgba(15, 15, 15, 0.2) 0 0 0 1px inset, rgba(15, 15, 15, 0.1) 0 1px 2px;
+    background: rgb(46, 170, 220) none repeat scroll 0 0;
+    color: white;
+    fill: white;
+    line-height: 1.2;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+#container {
+    margin: 20px auto auto;
+    width: 800px;
+    max-width: 800px;
+    text-align: center;
+    padding: 15px;
+    box-shadow: rgba(15, 15, 15, 0.1) 0 0 0 1px, rgba(15, 15, 15, 0.2) 0 5px 10px, rgba(15, 15, 15, 0.4) 0 15px 40px;
+    border-radius: 3px;
+    background: rgb(47, 52, 55) none repeat scroll 0 0;
+}
